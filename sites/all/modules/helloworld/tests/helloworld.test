@@ -1,0 +1,36 @@
+<?php
+
+class HelloWorldTests extends DrupalWebTestCase {
+    public static function getInfo() {
+        return array(
+        'name' => 'Hello World',
+        'description' => 'Tests for the Hello World module.',
+        'group' => 'Hello World Group',
+        );
+    }
+    /**
+    * Perform any setup tasks for our test case
+    */
+    public function setUp() {
+        parent::setUp(array('helloworld'));
+        $this->privileged_user = $this->drupalCreateUser(array('administer site configuration'
+        ));
+    }
+    public function _testHelloWorld() {
+        $this->drupalGet('helloworld');
+        $this->assertText('Hello World. Welcome to Drupal.', 'The page content is present.');
+    }
+
+    public function testAuthorization() {
+
+        $this->drupalLogin($this->privileged_user);
+        $this->drupalGet('admin/config/system/site-information');
+        $site_name = $this->randomString(10);
+        $data = array(
+            'site_name' => $site_name,
+        );
+
+        $this->assertTitle('Site information | Drupal');
+
+    }
+}

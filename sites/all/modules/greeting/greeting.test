@@ -1,0 +1,21 @@
+<?php
+
+class GreetingTests extends DrupalWebTestCase {
+    public static function getInfo() {
+        return array(
+            'name' => 'Greeting Tests',
+            'description' => 'Tests the Greeting module.',
+            'group' => 'Epicodus Examples Tests',
+        );
+    }
+    public function setUp() {
+        parent::setUp(array('greeting'));
+        $this->privileged_user = $this->drupalCreateUser(array('administer site configuration'));
+    }
+
+    public function testGreetingNavigation() {
+    $this->drupalGet('hello_friend');
+
+    $this->assertText('Hello my dear friend!', 'Text displayed properly.');
+    }
+}
